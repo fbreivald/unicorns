@@ -63,25 +63,67 @@ public class TestOpMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
 
         while (opModeIsActive()) {
-            double r = Math.hypot(gamepad1.right_stick_x, gamepad1.right_stick_y);
-            double robotAngle = Math.atan2(gamepad1.right_stick_y, gamepad1.right_stick_x) - Math.PI / 4;
-            double rightX = gamepad1.left_stick_y;
-            final double v1 = r * Math.cos(robotAngle) + rightX;
-            final double v2 = r * Math.sin(robotAngle) - rightX;
-            final double v3 = r * Math.sin(robotAngle) + rightX;
-            final double v4 = r * Math.cos(robotAngle) - rightX;
+            boolean beastmode = false;
+            double LSY = gamepad1.left_stick_y;
+            double RSX = gamepad1.right_stick_x;
+            double LT = gamepad1.left_trigger;
+            double RT = gamepad1.right_trigger;
+            double v1 = 0;
+            double v2 = 0;
+            double v3 = 0;
+            double v4 = 0;
 
-            mLeftFront.setPower(v1/2);
-            mRightFront.setPower(v2/2);
-            mLeftBack.setPower(v3/2);
-            mRightBack.setPower(v4/2);
+            if(gamepad1.y) {
+                beastmode = true;
+            } else if (gamepad1.x) {
+                beastmode = false;
+            }
+
+            if(LSY != 0) {
+                v1 = LSY;
+                v2 = LSY;
+                v3 = LSY;
+                v4 = LSY;
+            } else if(RSX > 0) {
+                v1 = RSX;
+                v2 = -RSX;
+                v3 = RSX;
+                v4 = -RSX;
+            } else if(RSX < 0) {
+                v1 = -RSX;
+                v2 = RSX;
+                v3 = -RSX;
+                v4 = RSX;
+            } else if(LT != 0) {
+                v1 = -LT;
+                v2 = LT;
+                v3 = LT;
+                v4 = -LT;
+            } else if(RT != 0) {
+                v1 = RT;
+                v2 = -RT;
+                v3 = -RT;
+                v4 = RT;
+            }
+
+
+            if(beastmode) {
+                mLeftFront.setPower(v1);
+                mRightFront.setPower(v2);
+                mLeftBack.setPower(v3);
+                mRightBack.setPower(v4);
+            } else {
+                mLeftFront.setPower(v1 / 2);
+                mRightFront.setPower(v2 / 2);
+                mLeftBack.setPower(v3 / 2);
+                mRightBack.setPower(v4 / 2);
+            }
 
             telemetry.addData("Status", "running");
             telemetry.addData("LeftFront Motor: ", v1);
             telemetry.addData("RightFront Motor: ", v2);
             telemetry.addData("LeftBack Motor: ", v3);
             telemetry.addData("RightBack Motor: ", v4);
-            telemetry.addData("Robot Angle: ", robotAngle);
             telemetry.update();
 
 
