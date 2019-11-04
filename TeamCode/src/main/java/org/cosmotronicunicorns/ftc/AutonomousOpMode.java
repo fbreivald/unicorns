@@ -4,12 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
 public class AutonomousOpMode extends LinearOpMode {
-// declare components
+
+
+    // declare components
     private Gyroscope imu;
     private DcMotor mLeftFront;
     private DcMotor mLeftBack;
@@ -17,6 +20,38 @@ public class AutonomousOpMode extends LinearOpMode {
     private DcMotor mRightBack;
 
     private Servo servoTest;
+
+    private void halt() {
+        mLeftFront.setPower(0);
+        mRightFront.setPower(0);
+        mLeftBack.setPower(0);
+        mRightBack.setPower(0);
+    }
+
+    private void move(double power, int time) {
+        mLeftFront.setPower(power);
+        mRightFront.setPower(power);
+        mLeftBack.setPower(power);
+        mRightBack.setPower(power);
+        sleep(time);
+        halt();
+    }
+    private void turn(double power, int time) {
+        mLeftFront.setPower(power);
+        mRightFront.setPower(-power);
+        mLeftBack.setPower(power);
+        mRightBack.setPower(-power);
+        sleep(time);
+        halt();
+    }
+    private void strafe(double power, int time) {
+        mLeftFront.setPower(power);
+        mRightFront.setPower(-power);
+        mLeftBack.setPower(-power);
+        mRightBack.setPower(power);
+        sleep(time);
+        halt();
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -47,7 +82,16 @@ public class AutonomousOpMode extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
+        mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
 
+        move(.25, 1000);
+        strafe(.5, 3000);
+        move(.5, 5000);
+        strafe(1, 5000);
     }
+
+
 }
+
