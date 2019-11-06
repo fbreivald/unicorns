@@ -2,7 +2,6 @@ package org.cosmotronicunicorns.ftc;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gyroscope;
@@ -21,6 +20,7 @@ public class AutonomousOpModeBlue extends LinearOpMode {
 
     private Servo servoTest;
 
+    //Declare Funtion for stopping robot
     private void halt() {
         mLeftFront.setPower(0);
         mRightFront.setPower(0);
@@ -28,6 +28,7 @@ public class AutonomousOpModeBlue extends LinearOpMode {
         mRightBack.setPower(0);
     }
 
+    //Declare move function with settings power and time
     private void move(double power, int time) {
         mLeftFront.setPower(power);
         mRightFront.setPower(power);
@@ -36,6 +37,8 @@ public class AutonomousOpModeBlue extends LinearOpMode {
         sleep(time);
         halt();
     }
+    //Declare turn function with settings power and time
+    // Positive power turns robot clockwise
     private void turn(double power, int time) {
         mLeftFront.setPower(power);
         mRightFront.setPower(-power);
@@ -44,6 +47,8 @@ public class AutonomousOpModeBlue extends LinearOpMode {
         sleep(time);
         halt();
     }
+    //Declare strafe function with settings power and time
+    // Positive power strafes the robot left
     private void strafe(double power, int time) {
         mLeftFront.setPower(power);
         mRightFront.setPower(-power);
@@ -56,6 +61,7 @@ public class AutonomousOpModeBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 //        imu = hardwareMap.get(Gyroscope.class, "imu");
+        //Declare Motors with try-catch
         try {
             mLeftFront = hardwareMap.get(DcMotor.class, "mLeftFront");
         } catch (Exception e) {
@@ -82,10 +88,12 @@ public class AutonomousOpModeBlue extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
+        // Set two opposite motors to reverse
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
 
+        // Actual commands using functions declared lines 24 - 60
         strafe(.5,2200);
         turn(-.10,120);
         move(1,4000);
@@ -94,6 +102,7 @@ public class AutonomousOpModeBlue extends LinearOpMode {
         move(-1,300);
         move(1,500);
         move(-1,300);
+
     }
 
 

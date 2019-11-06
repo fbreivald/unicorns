@@ -1,5 +1,6 @@
 package org.cosmotronicunicorns.ftc;
 
+// import packages
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,11 +21,13 @@ public class TestOpMode extends LinearOpMode {
 
     private Servo servoTest;
 
+    //To check if x or y are pressed
     private boolean prevX = false;
     private boolean prevY = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        //Declare Motors with try-catch
         try {
             mLeftFront = hardwareMap.get(DcMotor.class, "mLeftFront");
         } catch (Exception e) {
@@ -56,12 +59,13 @@ public class TestOpMode extends LinearOpMode {
         waitForStart();
         loop();
         // run until the end of the match (driver presses STOP)
-
+        // Set two opposite motors to reverse
         int beastmode = 1;
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         while (opModeIsActive()) {
+            //declare variables for controller input
             double LSY = -gamepad1.left_stick_y;
             double RSX = -gamepad1.right_stick_x;
             double LT = gamepad1.left_trigger;
@@ -72,6 +76,7 @@ public class TestOpMode extends LinearOpMode {
             double lbPower = 0;
             double rbPower = 0;
 
+            // Check if beastmode has changed
             if(yReleased()) {
                 beastmode++;
             } else if (xReleased()) {
@@ -79,25 +84,19 @@ public class TestOpMode extends LinearOpMode {
             }
             telemetry.addData("beastmode", beastmode);
 
+            //Declare power to Joystick Position with max of 1 and min of -1
             lfPower = Range.clip(LSY - RSX - strafe, -1.0, 1.0);
             lbPower = Range.clip(LSY - RSX + strafe, -1.0, 1.0);
             rfPower = Range.clip(LSY + RSX + strafe, -1.0, 1.0);
             rbPower = Range.clip(LSY + RSX - strafe, -1.0, 1.0);
 
-//            if (LSY != 0 || RSX != 0) {
-//            } else {
-//                telemetry.addData("strafe", strafe);
-//                lfPower = -strafe;
-//                rfPower = strafe;
-//                lbPower = strafe;
-//                rbPower = -strafe;
-//            }
-
+            // Set motor power to declared power
             mLeftFront.setPower(lfPower / beastmode);
             mRightFront.setPower(rfPower / beastmode);
             mLeftBack.setPower(lbPower / beastmode);
             mRightBack.setPower(rbPower / beastmode);
 
+            //Output controller input
             telemetry.addData("Status", "running");
             telemetry.addData("Left Stick Y: ", LSY);
             telemetry.addData("Right Stick X: ", RSX);
@@ -107,6 +106,7 @@ public class TestOpMode extends LinearOpMode {
         }
     }
 
+    // Check if pressed and released x/y button to change the value of beastmode
     boolean xReleased() {
         boolean released = !gamepad1.x && prevX;
         telemetry.addData("X/prev/released", "%b/%b/%b", gamepad1.x, prevX, released);
