@@ -66,6 +66,7 @@ public class TestOpMode extends LinearOpMode {
             double RSX = -gamepad1.right_stick_x;
             double LT = gamepad1.left_trigger;
             double RT = gamepad1.right_trigger;
+            double strafe = LT - RT;
             double lfPower = 0;
             double rfPower = 0;
             double lbPower = 0;
@@ -78,17 +79,19 @@ public class TestOpMode extends LinearOpMode {
             }
             telemetry.addData("beastmode", beastmode);
 
-            if (LSY != 0 || RSX != 0) {
-                lfPower = lbPower = Range.clip(LSY - RSX, -1.0, 1.0);
-                rfPower = rbPower = Range.clip(LSY + RSX, -1.0, 1.0);
-            } else {
-                double strafe = LT - RT;
-                telemetry.addData("strafe", strafe);
-                lfPower = -strafe;
-                rfPower = strafe;
-                lbPower = strafe;
-                rbPower = -strafe;
-            }
+            lfPower = Range.clip(LSY - RSX - strafe, -1.0, 1.0);
+            lbPower = Range.clip(LSY - RSX + strafe, -1.0, 1.0);
+            rfPower = Range.clip(LSY + RSX + strafe, -1.0, 1.0);
+            rbPower = Range.clip(LSY + RSX - strafe, -1.0, 1.0);
+
+//            if (LSY != 0 || RSX != 0) {
+//            } else {
+//                telemetry.addData("strafe", strafe);
+//                lfPower = -strafe;
+//                rfPower = strafe;
+//                lbPower = strafe;
+//                rbPower = -strafe;
+//            }
 
             mLeftFront.setPower(lfPower / beastmode);
             mRightFront.setPower(rfPower / beastmode);

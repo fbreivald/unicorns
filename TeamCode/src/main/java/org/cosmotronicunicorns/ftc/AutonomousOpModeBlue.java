@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
-public class AutonomousOpMode extends LinearOpMode {
+public class AutonomousOpModeBlue extends LinearOpMode {
 
 
     // declare components
@@ -86,10 +86,14 @@ public class AutonomousOpMode extends LinearOpMode {
         mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
 
-        move(.25, 1000);
-        strafe(.5, 3000);
-        move(.5, 5000);
-        strafe(1, 5000);
+        strafe(.5,2200);
+        turn(-.10,120);
+        move(1,4000);
+        turn(-1,200);
+        move(1,1000);
+        move(-1,300);
+        move(1,500);
+        move(-1,300);
     }
 
 
