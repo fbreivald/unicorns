@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
-public class AutonomousOpModeBlue extends LinearOpMode {
+public class MoveForward extends LinearOpMode {
 
 
     // declare components
@@ -94,17 +94,7 @@ public class AutonomousOpModeBlue extends LinearOpMode {
         waitForStart();
 
         // Actual commands using functions declared lines 24 - 60
-        strafe(.5,2400);
-        turn(-.10,120);
-        move(1,4000);
-        turn(-1,200);
-        move(1,1000);
-        move(-1,300);
-        move(1,1500);
-        move(-1,100);
-        turn(1,200);
-        move(-1,300);
-
+        move(.5,400);
     }
 
 

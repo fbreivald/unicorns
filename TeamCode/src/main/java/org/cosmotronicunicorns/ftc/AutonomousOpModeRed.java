@@ -100,8 +100,11 @@ public class AutonomousOpModeRed extends LinearOpMode {
         turn(1,200);
         move(1,1000);
         move(-1,300);
-        move(1,500);
+        move(1,1500);
+        move(-1,100);
+        turn(-1,200);
         move(-1,300);
+
 
     }
 
