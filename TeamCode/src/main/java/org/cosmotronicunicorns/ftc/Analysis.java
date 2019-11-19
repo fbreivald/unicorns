@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
-public class MoveForward extends LinearOpMode {
+public class Analysis extends LinearOpMode {
 
 
     // declare components
@@ -94,8 +94,34 @@ public class MoveForward extends LinearOpMode {
         waitForStart();
 
         // Actual commands using functions declared lines 24 - 60
-        sleep(25000);
-        move(.5,400);
+        telemetry.addData("Left Front Motor: ", "Running");
+        telemetry.update();
+        mLeftFront.setPower(1);
+        sleep(100);
+        halt();
+        sleep(2000);
+
+        telemetry.addData("Left Back Motor: ", "Running");
+        telemetry.update();
+        mLeftBack.setPower(1);
+        sleep(100);
+        halt();
+        sleep(2000);
+
+        telemetry.addData("Right Front Motor: ", "Running");
+        telemetry.update();
+        mRightFront.setPower(1);
+        sleep(100);
+        halt();
+        sleep(2000);
+
+        telemetry.addData("Right Back Motor: ", "Running");
+        telemetry.update();
+        mRightBack.setPower(1);
+        sleep(100);
+        halt();
+        sleep(2000);
+
     }
 
 
