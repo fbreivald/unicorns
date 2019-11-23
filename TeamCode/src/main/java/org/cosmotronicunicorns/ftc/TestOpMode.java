@@ -13,17 +13,17 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp
 public class TestOpMode extends LinearOpMode {
 // declare components
-    private Gyroscope imu;
     private DcMotor mLeftFront;
     private DcMotor mLeftBack;
     private DcMotor mRightFront;
     private DcMotor mRightBack;
 
-    private Servo servoTest;
+    private Servo servoGrabber;
 
     //To check if x or y are pressed
     private boolean prevX = false;
     private boolean prevY = false;
+    private boolean prevA = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,9 +49,9 @@ public class TestOpMode extends LinearOpMode {
             telemetry.addData("error", "RightBack Motor not found");
         }
         try {
-            servoTest = hardwareMap.get(Servo.class, "test servo");
+            servoGrabber = hardwareMap.get(Servo.class, "servoGrabber");
         } catch (Exception e) {
-            telemetry.addData("error", "test servo not found");
+            telemetry.addData("error", "grabber servo not found");
         }
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -84,6 +84,8 @@ public class TestOpMode extends LinearOpMode {
             }
             telemetry.addData("beastmode", beastmode);
 
+
+
             //Declare power to Joystick Position with max of 1 and min of -1
             lfPower = Range.clip(LSY - RSX - strafe, -1.0, 1.0);
             lbPower = Range.clip(LSY - RSX + strafe, -1.0, 1.0);
@@ -108,16 +110,22 @@ public class TestOpMode extends LinearOpMode {
 
     // Check if pressed and released x/y button to change the value of beastmode
     boolean xReleased() {
-        boolean released = !gamepad1.x && prevX;
-        telemetry.addData("X/prev/released", "%b/%b/%b", gamepad1.x, prevX, released);
-        prevX = gamepad1.x;
+        boolean released = !gamepad2.x && prevX;
+        telemetry.addData("X/prev/released", "%b/%b/%b", gamepad2.x, prevX, released);
+        prevX = gamepad2.x;
         return released;
     }
 
     boolean yReleased() {
-        boolean released = !gamepad1.y && prevY;
-        telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad1.y, prevY, released);
-        prevY = gamepad1.y;
+        boolean released = !gamepad2.y && prevY;
+        telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad2.y, prevY, released);
+        prevY = gamepad2.y;
+        return released;
+    }
+    boolean aReleased() {
+        boolean released = !gamepad2.a && prevA;
+        telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad2.y, prevA, released);
+        prevA = gamepad2.a;
         return released;
     }
 }
