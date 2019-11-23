@@ -18,7 +18,7 @@ public class Analysis extends LinearOpMode {
     private DcMotor mRightFront;
     private DcMotor mRightBack;
 
-    private Servo servoTest;
+    private Servo servoGrabber;
 
     //Declare Funtion for stopping robot
     private void halt() {
@@ -84,13 +84,14 @@ public class Analysis extends LinearOpMode {
         }
 //        digitalTouch = hardwareMap.get(TouchSensor.class, "test touch");
 //        sensorColorRange = hardwareMap.get(DistanceSensor.class, "color");
-        servoTest = hardwareMap.get(Servo.class, "test servo");
+        servoGrabber = hardwareMap.get(Servo.class, "servoGrabber");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         // Set two opposite motors to reverse
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        mLeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
 
         // Actual commands using functions declared lines 24 - 60

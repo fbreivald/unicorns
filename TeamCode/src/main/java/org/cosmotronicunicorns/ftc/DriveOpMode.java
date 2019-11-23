@@ -19,6 +19,8 @@ public class DriveOpMode extends LinearOpMode {
     private DcMotor mRightBack;
 
     private Servo servoGrabber;
+    private static double upPos = .55;
+    private static double downPos = .95;
 
     //To check if x or y are pressed
     private boolean prevX = false;
@@ -61,8 +63,10 @@ public class DriveOpMode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         // Set two opposite motors to reverse
         int beastmode = 1;
+        boolean armDown = false;
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        mLeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
         while (opModeIsActive()) {
             //declare variables for controller input
@@ -85,6 +89,18 @@ public class DriveOpMode extends LinearOpMode {
             telemetry.addData("beastmode", beastmode);
 
 
+            // To move arm up and down with a toggle button A
+            if(aReleased()) {
+                if(!armDown) {
+                    servoGrabber.setPosition(downPos);
+                    armDown = true;
+                } else if(armDown) {
+                    servoGrabber.setPosition(upPos);
+                    armDown = false;
+                }
+            }
+
+
 
             //Declare power to Joystick Position with max of 1 and min of -1
             lfPower = Range.clip(LSY - RSX - strafe, -1.0, 1.0);
@@ -104,28 +120,29 @@ public class DriveOpMode extends LinearOpMode {
             telemetry.addData("Right Stick X: ", RSX);
             telemetry.addData("Left Trigger: ", LT);
             telemetry.addData("Right Trigger ", RT);
+            telemetry.addData("ServoGrabber Position: ", servoGrabber.getPosition());
             telemetry.update();
         }
     }
 
     // Check if pressed and released x/y button to change the value of beastmode
     boolean xReleased() {
-        boolean released = !gamepad2.x && prevX;
-        telemetry.addData("X/prev/released", "%b/%b/%b", gamepad2.x, prevX, released);
-        prevX = gamepad2.x;
+        boolean released = !gamepad1.x && prevX;
+        telemetry.addData("X/prev/released", "%b/%b/%b", gamepad1.x, prevX, released);
+        prevX = gamepad1.x;
         return released;
     }
 
     boolean yReleased() {
-        boolean released = !gamepad2.y && prevY;
-        telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad2.y, prevY, released);
-        prevY = gamepad2.y;
+        boolean released = !gamepad1.y && prevY;
+        telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad1.y, prevY, released);
+        prevY = gamepad1.y;
         return released;
     }
     boolean aReleased() {
-        boolean released = !gamepad2.a && prevA;
-        telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad2.y, prevA, released);
-        prevA = gamepad2.a;
+        boolean released = !gamepad1.a && prevA;
+        telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad1.y, prevA, released);
+        prevA = gamepad1.a;
         return released;
     }
 }
