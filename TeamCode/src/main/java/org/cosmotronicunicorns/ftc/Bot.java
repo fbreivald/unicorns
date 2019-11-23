@@ -1,5 +1,6 @@
 package org.cosmotronicunicorns.ftc;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
@@ -9,7 +10,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Bot {
+public abstract class Bot extends LinearOpMode {
 
     private HardwareMap hardwareMap;
     private Gyroscope imu;
@@ -22,12 +23,7 @@ public class Bot {
     private Servo servoTest;
     private Telemetry telemetry;
 
-    public Bot(HardwareMap hardwareMap, Telemetry telemetry) {
-        this.hardwareMap = hardwareMap;
-        this.telemetry = telemetry;
-    }
-
-    public void init() {
+    public void loadComponents() {
         try {
             mLeftFront = hardwareMap.get(DcMotor.class, "mLeftFront");
         } catch (Exception e) {
@@ -57,6 +53,43 @@ public class Bot {
         telemetry.update();
     }
 
+    //Declare Funtion for stopping robot
+    private void halt() {
+        mLeftFront.setPower(0);
+        mRightFront.setPower(0);
+        mLeftBack.setPower(0);
+        mRightBack.setPower(0);
+    }
+
+    //Declare move function with settings power and time
+    private void move(double power, int time) {
+        mLeftFront.setPower(power);
+        mRightFront.setPower(power);
+        mLeftBack.setPower(power);
+        mRightBack.setPower(power);
+        sleep(time);
+        halt();
+    }
+    //Declare turn function with settings power and time
+    // Positive power turns robot clockwise
+    private void turn(double power, int time) {
+        mLeftFront.setPower(power);
+        mRightFront.setPower(-power);
+        mLeftBack.setPower(power);
+        mRightBack.setPower(-power);
+        sleep(time);
+        halt();
+    }
+    //Declare strafe function with settings power and time
+    // Positive power strafes the robot left
+    private void strafe(double power, int time) {
+        mLeftFront.setPower(power);
+        mRightFront.setPower(-power);
+        mLeftBack.setPower(-power);
+        mRightBack.setPower(power);
+        sleep(time);
+        halt();
+    }
 }
 
 

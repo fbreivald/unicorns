@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp
-public class TestOpMode extends LinearOpMode {
+public class DriveOpMode extends LinearOpMode {
 // declare components
     private DcMotor mLeftFront;
     private DcMotor mLeftBack;
