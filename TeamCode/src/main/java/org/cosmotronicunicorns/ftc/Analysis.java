@@ -2,10 +2,13 @@ package org.cosmotronicunicorns.ftc;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorREVColorDistance;
 
 @Autonomous
 public class Analysis extends LinearOpMode {
@@ -19,6 +22,7 @@ public class Analysis extends LinearOpMode {
     private DcMotor mRightBack;
 
     private Servo servoGrabber;
+    private ColorSensor fColorSensor;
 
     //Declare Funtion for stopping robot
     private void halt() {
@@ -85,7 +89,12 @@ public class Analysis extends LinearOpMode {
 //        digitalTouch = hardwareMap.get(TouchSensor.class, "test touch");
 //        sensorColorRange = hardwareMap.get(DistanceSensor.class, "color");
         servoGrabber = hardwareMap.get(Servo.class, "servoGrabber");
-        telemetry.addData("Status", "Initialized");
+        try {
+            fColorSensor = hardwareMap.get(ColorSensor.class, "fColorSensor");
+        } catch (Exception e) {
+            telemetry.addData("error", "color sensor front not found");
+        }
+      /*  telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         // Set two opposite motors to reverse
@@ -121,7 +130,14 @@ public class Analysis extends LinearOpMode {
         mRightBack.setPower(1);
         sleep(100);
         halt();
-        sleep(2000);
+        sleep(2000); */
+
+        for(int i = 0; i < 10000; i++) {
+            telemetry.addData("Color Sensor: ", fColorSensor.red());
+            telemetry.update();
+        }
+
+
 
     }
 
