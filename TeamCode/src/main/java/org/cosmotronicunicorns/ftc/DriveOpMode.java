@@ -3,9 +3,10 @@ package org.cosmotronicunicorns.ftc;
 // import packages
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gyroscope;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -19,6 +20,8 @@ public class DriveOpMode extends LinearOpMode {
     private DcMotor mRightBack;
 
     private Servo servoGrabber;
+    private ColorSensor fColorSensor;
+    private DistanceSensor fDistanceSensor;
     private static double upPos = .55;
     private static double downPos = .95;
 
@@ -54,6 +57,15 @@ public class DriveOpMode extends LinearOpMode {
             servoGrabber = hardwareMap.get(Servo.class, "servoGrabber");
         } catch (Exception e) {
             telemetry.addData("error", "grabber servo not found");
+        }
+        try {
+            fColorSensor = hardwareMap.get(ColorSensor.class, "fColorSensor");
+        } catch (Exception e) {
+            telemetry.addData("error", "color sensor front not found");
+        }try {
+            fDistanceSensor = hardwareMap.get(DistanceSensor.class, "fColorSensor");
+        } catch (Exception e) {
+            telemetry.addData("error", "color sensor front not found");
         }
         telemetry.addData("Status", "Initialized");
         telemetry.update();

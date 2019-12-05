@@ -5,142 +5,64 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorREVColorDistance;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous
-public class Analysis extends LinearOpMode {
+public class Analysis extends Bot {
 
-
-    // declare components
-    private Gyroscope imu;
-    private DcMotor mLeftFront;
-    private DcMotor mLeftBack;
-    private DcMotor mRightFront;
-    private DcMotor mRightBack;
-
-    private Servo servoGrabber;
-    private ColorSensor fColorSensor;
-
-    //Declare Funtion for stopping robot
-    private void halt() {
-        mLeftFront.setPower(0);
-        mRightFront.setPower(0);
-        mLeftBack.setPower(0);
-        mRightBack.setPower(0);
-    }
-
-    //Declare move function with settings power and time
-    private void move(double power, int time) {
-        mLeftFront.setPower(power);
-        mRightFront.setPower(power);
-        mLeftBack.setPower(power);
-        mRightBack.setPower(power);
-        sleep(time);
-        halt();
-    }
-    //Declare turn function with settings power and time
-    // Positive power turns robot clockwise
-    private void turn(double power, int time) {
-        mLeftFront.setPower(power);
-        mRightFront.setPower(-power);
-        mLeftBack.setPower(power);
-        mRightBack.setPower(-power);
-        sleep(time);
-        halt();
-    }
-    //Declare strafe function with settings power and time
-    // Positive power strafes the robot left
-    private void strafe(double power, int time) {
-        mLeftFront.setPower(power);
-        mRightFront.setPower(-power);
-        mLeftBack.setPower(-power);
-        mRightBack.setPower(power);
-        sleep(time);
-        halt();
-    }
 
     @Override
     public void runOpMode() throws InterruptedException {
-//        imu = hardwareMap.get(Gyroscope.class, "imu");
-        //Declare Motors with try-catch
-        try {
-            mLeftFront = hardwareMap.get(DcMotor.class, "mLeftFront");
-        } catch (Exception e) {
-            telemetry.addData("error", "LeftFront Motor not found");
-        }
-        try {
-            mLeftBack = hardwareMap.get(DcMotor.class, "mLeftBack");
-        } catch (Exception e) {
-            telemetry.addData("error", "LeftBack Motor not found");
-        }
-        try {
-            mRightFront = hardwareMap.get(DcMotor.class, "mRightFront");
-        } catch (Exception e) {
-            telemetry.addData("error", "RightFront Motor not found");
-        }
-        try {
-            mRightBack = hardwareMap.get(DcMotor.class, "mRightBack");
-        } catch (Exception e) {
-            telemetry.addData("error", "RightBack Motor not found");
-        }
-//        digitalTouch = hardwareMap.get(TouchSensor.class, "test touch");
-//        sensorColorRange = hardwareMap.get(DistanceSensor.class, "color");
-        servoGrabber = hardwareMap.get(Servo.class, "servoGrabber");
-        try {
-            fColorSensor = hardwareMap.get(ColorSensor.class, "fColorSensor");
-        } catch (Exception e) {
-            telemetry.addData("error", "color sensor front not found");
-        }
-      /*  telemetry.addData("Status", "Initialized");
+        initDevices();
         telemetry.update();
-        // Wait for the game to start (driver presses PLAY)
-        // Set two opposite motors to reverse
-        mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        mLeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        waitForStart();
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
         waitForStart();
 
         // Actual commands using functions declared lines 24 - 60
         telemetry.addData("Left Front Motor: ", "Running");
         telemetry.update();
         mLeftFront.setPower(1);
-        sleep(100);
+        sleep(500);
         halt();
-        sleep(2000);
+        sleep(1000);
 
         telemetry.addData("Left Back Motor: ", "Running");
         telemetry.update();
         mLeftBack.setPower(1);
-        sleep(100);
+        sleep(500);
         halt();
-        sleep(2000);
+        sleep(1000);
 
         telemetry.addData("Right Front Motor: ", "Running");
         telemetry.update();
         mRightFront.setPower(1);
-        sleep(100);
+        sleep(500);
         halt();
-        sleep(2000);
+        sleep(1000);
 
         telemetry.addData("Right Back Motor: ", "Running");
         telemetry.update();
         mRightBack.setPower(1);
-        sleep(100);
+        sleep(500);
         halt();
-        sleep(2000); */
+        sleep(1000);
 
-        for(int i = 0; i < 10000; i++) {
-            telemetry.addData("Color Sensor: ", fColorSensor.red());
-            telemetry.update();
-        }
-
-
-
+//        for(int i = 0; i < 10000; i++) {
+//            telemetry.addData("Color Sensor R: ", fColorSensor.red());
+//            telemetry.addData("Color Sensor G: ", fColorSensor.green());
+//            telemetry.addData("Color Sensor B: ", fColorSensor.blue());
+//            telemetry.addData("DistanceMM: ", fDistanceSensor.getDistance(DistanceUnit.MM));
+//            telemetry.update();
+//        }
     }
-
-
 }
 

@@ -1,7 +1,10 @@
 package org.cosmotronicunicorns.ftc;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gyroscope;
@@ -18,7 +21,8 @@ public class AutonomousOpModeBlue extends LinearOpMode {
     private DcMotor mRightFront;
     private DcMotor mRightBack;
 
-    private Servo servoTest;
+    private Servo servoGrabber;
+    private ColorSensor fColorSensor;
 
     //Declare Funtion for stopping robot
     private void halt() {
@@ -82,9 +86,14 @@ public class AutonomousOpModeBlue extends LinearOpMode {
         } catch (Exception e) {
             telemetry.addData("error", "RightBack Motor not found");
         }
+        try {
+            fColorSensor = hardwareMap.get(ColorSensor.class, "fColorSensor");
+        } catch (Exception e) {
+            telemetry.addData("error", "color sensor front not found");
+        }
 //        digitalTouch = hardwareMap.get(TouchSensor.class, "test touch");
 //        sensorColorRange = hardwareMap.get(DistanceSensor.class, "color");
-        servoTest = hardwareMap.get(Servo.class, "test servo");
+        servoGrabber = hardwareMap.get(Servo.class, "servoGrabber");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
