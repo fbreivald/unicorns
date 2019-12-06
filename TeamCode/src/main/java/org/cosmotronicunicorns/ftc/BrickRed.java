@@ -39,9 +39,9 @@ public class BrickRed extends Bot {
                     strafe(.5, 200);
                     while (!correctDistance) {
                         double distance1 = distanceSensor.getDistance(DistanceUnit.MM);
-                        if (distance1 > 30) {
+                        if (distance1 > 29) {
                             move(.25);
-                        } else if(distance1 < 30) {
+                        } else if(distance1 < 31) {
                             move(-.25);
                         } else {
                             correctDistance = true;
