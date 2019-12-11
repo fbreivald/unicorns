@@ -19,9 +19,9 @@ public abstract class Bot extends LinearOpMode {
     protected ColorSensor colorSensor;
     protected DistanceSensor distanceSensor;
 
-    private Servo servoGrabber;
-    private static double upPos = .55;
-    private static double downPos = .95;
+    protected Servo servoGrabber;
+    protected static double upPos = .55;
+    protected static double downPos = .95;
 
     //To check if x or y are pressed
     private boolean prevX = false;
@@ -94,7 +94,7 @@ public abstract class Bot extends LinearOpMode {
         halt();
     }
     //Declare strafe function with settings power and time
-    // Positive power strafes the robot left
+    // Positive power strafes the robot right
     protected void strafe(double power, int time) {
         mLeftFront.setPower(power);
         mRightFront.setPower(-power);
@@ -102,6 +102,12 @@ public abstract class Bot extends LinearOpMode {
         mRightBack.setPower(power);
         sleep(time);
         halt();
+    }
+    protected void strafe(double power) {
+        mLeftFront.setPower(power);
+        mRightFront.setPower(-power);
+        mLeftBack.setPower(-power);
+        mRightBack.setPower(power);
     }
 }
 

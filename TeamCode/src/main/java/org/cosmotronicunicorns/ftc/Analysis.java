@@ -19,11 +19,9 @@ public class Analysis extends Bot {
     @Override
     public void runOpMode() throws InterruptedException {
         initDevices();
-        telemetry.update();
-
         waitForStart();
 
-        telemetry.addData("Status", "Initialized");
+  /*      telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
 
@@ -54,15 +52,16 @@ public class Analysis extends Bot {
         mRightBack.setPower(1);
         sleep(500);
         halt();
-        sleep(1000);
+        sleep(1000); */
 
-//        for(int i = 0; i < 10000; i++) {
-//            telemetry.addData("Color Sensor R: ", fColorSensor.red());
-//            telemetry.addData("Color Sensor G: ", fColorSensor.green());
-//            telemetry.addData("Color Sensor B: ", fColorSensor.blue());
-//            telemetry.addData("DistanceMM: ", fDistanceSensor.getDistance(DistanceUnit.MM));
-//            telemetry.update();
-//        }
+        while(opModeIsActive()) {
+            telemetry.addData("Color Sensor R: ", colorSensor.red());
+            telemetry.addData("Color Sensor G: ", colorSensor.green());
+            telemetry.addData("Color Sensor B: ", colorSensor.blue());
+            telemetry.addData("DistanceMM: ", distanceSensor.getDistance(DistanceUnit.MM));
+            telemetry.update();
+        }
+
     }
 }
 
