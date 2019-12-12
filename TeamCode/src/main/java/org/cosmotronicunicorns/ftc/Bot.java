@@ -9,6 +9,9 @@ import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
 public abstract class Bot extends LinearOpMode {
 
     protected Gyroscope imu;
@@ -36,7 +39,6 @@ public abstract class Bot extends LinearOpMode {
         servoGrabber = initDevice(Servo.class, "servoGrabber");
         colorSensor = initDevice(ColorSensor.class, "fColorSensor");
         distanceSensor = initDevice(DistanceSensor.class, "fColorSensor");
-
         servoGrabber.setPosition(upPos);
 
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -108,6 +110,10 @@ public abstract class Bot extends LinearOpMode {
         mRightFront.setPower(-power);
         mLeftBack.setPower(-power);
         mRightBack.setPower(power);
+    }
+
+    protected <T> boolean activeAnd(Supplier<Boolean> test) {
+        return opModeIsActive() && test.get();
     }
 }
 
