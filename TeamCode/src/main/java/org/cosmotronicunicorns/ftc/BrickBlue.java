@@ -3,6 +3,7 @@ package org.cosmotronicunicorns.ftc;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.MM;
 
@@ -42,7 +43,7 @@ public class BrickBlue extends Bot {
 //            }
             sleep(100);
             while (opModeIsActive() && !sFound) {
-                while(opModeIsActive() && distanceSensor.getDistance(MM) > 11) {
+                while(opModeIsActive() && distanceSensor.getDistance(MM) > 13) {
                     move(POWER);
                 }
                 halt();
@@ -55,26 +56,31 @@ public class BrickBlue extends Bot {
                     telemetry.update();
                     sleep(1000);
                 } else {
-                    strafe(STRAFEPOWER, 400);
+                    move(-.25, 50);
+                    strafe(STRAFEPOWER, 1700);
+                    move(.25, 50);
                     sleep(50);
                 }
             }
             halt();
             double endTime = getRuntime();
-            strafe(.3,200);
+            strafe(-.3,200);
             sleep(500);
-            move(.25, 300);
-            strafe(5,100);
-            move(.25, 100);
-            strafe(-.5,100);
+            //Shimmy
+            move(.25, 200);
+            strafe(-.5,200);
+            move(.25, 200);
+            strafe(.5,200);
+
             setGrabberPos(downPos);
             sleep(1000);
-            move(-.5, 500);
-            strafe(-STRAFEPOWER*2 , ((int)((endTime - startTime) * 500)) + 700);
-            move(.5, 100);
+            moveFastSlow(-.5, 1100);
+            move(.5, 30);
+            strafeFastSlow(-1, 1700);
+            move(.5, 800);
             setGrabberPos(upPos);
-            move(-5,200);
-            strafe(-.35, 2000);
+            moveFastSlow(-1,1000);
+            strafeFastSlow(-.35, 2000);
             strafe(.35, 500);
             move(.5, 500);
             while(opModeIsActive() && distanceSensor.getDistance(MM) > 11) {
@@ -82,9 +88,9 @@ public class BrickBlue extends Bot {
             }
             setGrabberPos(downPos+.05);
             sleep(1000);
-            move(-.25, 5000);
+            move(-.45, 5000);
             setGrabberPos(upPos);
-            strafe(1, 900);
+            strafe(1, 950);
 
             break;
         }
