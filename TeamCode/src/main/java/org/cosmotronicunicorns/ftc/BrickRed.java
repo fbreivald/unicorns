@@ -21,33 +21,33 @@ public class BrickRed extends Bot {
         boolean correctDistance = false;
         int stones = 0;
 
-        telemetry.addData("Distance (mm)", () -> distanceSensor.getDistance(MM));
-        Telemetry.Item colorItem = telemetry.addData("color:", "%d, %d, %d", colorSensor.red(), colorSensor.green(), colorSensor.blue());
-        colorItem.setValue(() -> colorSensor.argb());
+        telemetry.addData("Distance (mm)", () -> distanceSensorRight.getDistance(MM));
+        Telemetry.Item colorItem = telemetry.addData("color:", "%d, %d, %d", colorSensorRight.red(), colorSensorRight.green(), colorSensorRight.blue());
+        colorItem.setValue(() -> colorSensorRight.argb());
         while (opModeIsActive()) {
 
             move(POWER);
-            while(opModeIsActive() && distanceSensor.getDistance(MM) > 48) {
+            while(opModeIsActive() && distanceSensorRight.getDistance(MM) > 48) {
                 telemetry.update();
                 idle();
-//                double distance = distanceSensor.getDistance(MM);
+//                double distance = distanceSensorRight.getDistance(MM);
 //                telemetry.addData("Distance (mm):", distance);
             }
             halt();
             double startTime = getRuntime();
 
 //            while(!yellow()) {
-//                telemetry.addData("color:", "%d, %d, %d", colorSensor.red(), colorSensor.green(), colorSensor.blue());
+//                telemetry.addData("color:", "%d, %d, %d", colorSensorRight.red(), colorSensorRight.green(), colorSensorRight.blue());
 //                telemetry.update();
 //                move(.1);
 //            }
             sleep(100);
             while (opModeIsActive() && !sFound) {
-                while(opModeIsActive() && distanceSensor.getDistance(MM) > 13) {
+                while(opModeIsActive() && distanceSensorRight.getDistance(MM) > 12) {
                     move(POWER);
                 }
                 halt();
-                telemetry.addData("color:", "%d, %d, %d", colorSensor.red(), colorSensor.green(), colorSensor.blue());
+                telemetry.addData("color:", "%d, %d, %d", colorSensorRight.red(), colorSensorRight.green(), colorSensorRight.blue());
                 telemetry.update();
                 if (!yellow()) {
                     sFound = true;
@@ -56,7 +56,9 @@ public class BrickRed extends Bot {
                     telemetry.update();
                     sleep(1000);
                 } else {
-                    strafe(-STRAFEPOWER, 400);
+                    move(-.25, 50);
+                    strafe(-STRAFEPOWER, 1450);
+                    move(.25, 50);
                     sleep(50);
                 }
             }
@@ -64,28 +66,32 @@ public class BrickRed extends Bot {
             double endTime = getRuntime();
             strafe(.3,200);
             sleep(500);
+            //Shimmy
             move(.25, 200);
-            strafe(-5,100);
-            move(.25, 100);
-            strafe(.5,100);
+            strafe(.5,150);
+            move(.25, 250);
+            strafe(-.5,300);
+
             setGrabberPos(downPos);
             sleep(1000);
-            move(-.5, 500);
-            strafe(STRAFEPOWER*2 , ((int)((endTime - startTime) * 500)) + 700);
-            move(.5, 100);
+            moveFastSlow(-.35, 1400);
+            move(.5, 30);
+            strafeFastSlow(1, 1700);
+            move(.5, 700);
             setGrabberPos(upPos);
-            move(-5,200);
-            strafe(.35, 2000);
+            moveFastSlow(-1,1000);
+            strafeFastSlow(.35, 2000);
             strafe(-.35, 500);
             move(.5, 500);
-            while(opModeIsActive() && distanceSensor.getDistance(MM) > 11) {
+            while(opModeIsActive() && distanceSensorRight.getDistance(MM) > 11) {
                 move(POWER+.1);
             }
-            setGrabberPos(downPos+.05);
+            halt();
+            setGrabberPos(downPos+.15);
             sleep(1000);
-            move(-.25, 5000);
+            move(-.45, 3000);
             setGrabberPos(upPos);
-            strafe(-1, 900);
+            strafe(-1, 950);
 
             break;
         }
@@ -93,15 +99,8 @@ public class BrickRed extends Bot {
 
 
     boolean yellow () {
-        return colorSensor.red() > 7000 && colorSensor.green() > 10000 && colorSensor.blue() < 10000;
+        return colorSensorRight.red() > 7000 && colorSensorRight.green() > 10000 && colorSensorRight.blue() < 10000;
 
-    }
-
-    void setGrabberPos(double pos) {
-        servoGrabber.setPosition(pos);
-        while (Math.abs(servoGrabber.getPosition() - pos) > 0.01) {
-            sleep(50);
-        }
     }
 }
 
