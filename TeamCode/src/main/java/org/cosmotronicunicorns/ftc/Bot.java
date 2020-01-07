@@ -19,12 +19,14 @@ public abstract class Bot extends LinearOpMode {
     protected DcMotor mLeftBack;
     protected DcMotor mRightFront;
     protected DcMotor mRightBack;
-    protected ColorSensor colorSensor;
-    protected DistanceSensor distanceSensor;
+    protected ColorSensor colorSensorRight;
+    protected  ColorSensor colorSensorLeft;
+    protected DistanceSensor distanceSensorRight;
+    protected DistanceSensor distanceSensorLeft;
 
     protected Servo servoGrabber;
     protected static double upPos = .55;
-    protected static double downPos = .95;
+    protected static double downPos = 1.1;
 
     //To check if x or y are pressed
     private boolean prevX = false;
@@ -37,8 +39,10 @@ public abstract class Bot extends LinearOpMode {
         mRightFront = initDevice(DcMotor.class, "mRightFront");
         mRightBack = initDevice(DcMotor.class, "mRightBack");
         servoGrabber = initDevice(Servo.class, "servoGrabber");
-        colorSensor = initDevice(ColorSensor.class, "fColorSensor");
-        distanceSensor = initDevice(DistanceSensor.class, "fColorSensor");
+        colorSensorRight = initDevice(ColorSensor.class, "fColorSensor");
+        colorSensorLeft = initDevice(ColorSensor.class, "fColorSensor2");
+        distanceSensorRight = initDevice(DistanceSensor.class, "fColorSensor");
+        distanceSensorLeft = initDevice(DistanceSensor.class, "fColorSensor2");
         servoGrabber.setPosition(upPos);
 
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -105,15 +109,43 @@ public abstract class Bot extends LinearOpMode {
         sleep(time);
         halt();
     }
-    protected void strafe(double power) {
+    protected void moveFastSlow(double power, int time) {
+        telemetry.log().add("moveFastSlow");
+        mLeftFront.setPower(power);
+        mRightFront.setPower(power);
+        mLeftBack.setPower(power);
+        mRightBack.setPower(power);
+        telemetry.log().add("about to sleep");
+        sleep(time-300);
+        telemetry.log().add("back from sleep");
+        mLeftFront.setPower(power > 0 ? 0.1 : -0.1);
+        mRightFront.setPower(power > 0 ? 0.1 : -0.1);
+        mLeftBack.setPower(power > 0 ? 0.1 : -0.1);
+        mRightBack.setPower(power > 0 ? 0.1 : -0.1);
+        telemetry.log().add("about to sleep");
+        sleep(300);
+
+    }
+
+    protected void strafeFastSlow(double power, int time) {
         mLeftFront.setPower(power);
         mRightFront.setPower(-power);
         mLeftBack.setPower(-power);
         mRightBack.setPower(power);
+        sleep(time -300);
+        mLeftFront.setPower(power > 0 ? 0.1 : -0.1);
+        mRightFront.setPower(power > 0 ? -0.1 : 0.1);
+        mLeftBack.setPower(power > 0 ? -0.1 : 0.1);
+        mRightBack.setPower(power > 0 ? 0.1 : -0.1);
+        sleep(300);
     }
 
     protected <T> boolean activeAnd(Supplier<Boolean> test) {
         return opModeIsActive() && test.get();
+    }
+
+    void setGrabberPos(double pos) {
+        servoGrabber.setPosition(pos);
     }
 }
 

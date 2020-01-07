@@ -43,7 +43,7 @@ public class BrickRed extends Bot {
 //            }
             sleep(100);
             while (opModeIsActive() && !sFound) {
-                while(opModeIsActive() && distanceSensorRight.getDistance(MM) > 12) {
+                while(opModeIsActive() && distanceSensorRight.getDistance(MM) > 10) {
                     move(POWER);
                 }
                 halt();
@@ -57,7 +57,7 @@ public class BrickRed extends Bot {
                     sleep(1000);
                 } else {
                     move(-.25, 50);
-                    strafe(-STRAFEPOWER, 1450);
+                    strafe(-STRAFEPOWER, 1350);
                     move(.25, 50);
                     sleep(50);
                 }
@@ -87,9 +87,9 @@ public class BrickRed extends Bot {
                 move(POWER+.1);
             }
             halt();
-            setGrabberPos(downPos+.15);
+            setGrabberPos(downPos+.25);
             sleep(1000);
-            move(-.45, 3000);
+            move(-.45, 2750);
             setGrabberPos(upPos);
             strafe(-1, 950);
 
