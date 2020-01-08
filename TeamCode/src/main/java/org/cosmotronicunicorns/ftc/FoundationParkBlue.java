@@ -17,9 +17,10 @@ public class FoundationParkBlue extends Bot {
         strafe(-.35, 3000);
         strafe(.35, 500);
         move(.5, 400);
-        while(opModeIsActive() && distanceSensor.getDistance(MM) > 11) {
+        while(opModeIsActive() && distanceSensorLeft.getDistance(MM) > 11) {
             move(.2);
         }
+        halt();
         servoGrabber.setPosition(downPos+.05);
         sleep(1000);
         move(-.25, 5000);

@@ -67,14 +67,16 @@ public class BrickRed extends Bot {
             strafe(.3,200);
             sleep(500);
             //Shimmy
-            move(.25, 200);
+            move(.25, 300);
             strafe(.5,150);
             move(.25, 250);
             strafe(-.5,300);
 
             setGrabberPos(downPos);
             sleep(1000);
-            moveFastSlow(-.35, 1400);
+            move(1,150);
+            sleep(500);
+            moveFastSlow(-.35, 2000);
             move(.5, 30);
             strafeFastSlow(1, 1700);
             move(.5, 700);

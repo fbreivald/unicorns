@@ -3,12 +3,11 @@ package org.cosmotronicunicorns.ftc;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit.MM;
 
 @Autonomous
-public class BrickBlue extends Bot {
+public class BrickBlueNoFound extends Bot {
 
     private static double POWER = 0.1;
     private static double STRAFEPOWER = 0.15;
@@ -18,6 +17,8 @@ public class BrickBlue extends Bot {
         initDevices();
         waitForStart();
         boolean sFound = false;
+        boolean correctDistance = false;
+        int stones = 0;
 
         telemetry.addData("Distance (mm)", () -> distanceSensorLeft.getDistance(MM));
         Telemetry.Item colorItem = telemetry.addData("color:", "%d, %d, %d", colorSensorLeft.red(), colorSensorLeft.green(), colorSensorLeft.blue());
@@ -32,6 +33,7 @@ public class BrickBlue extends Bot {
 //                telemetry.addData("Distance (mm):", distance);
             }
             halt();
+            double startTime = getRuntime();
 
 //            while(!yellow()) {
 //                telemetry.addData("color:", "%d, %d, %d", colorSensorLeft.red(), colorSensorLeft.green(), colorSensorLeft.blue());
@@ -40,7 +42,7 @@ public class BrickBlue extends Bot {
 //            }
             sleep(100);
             while (opModeIsActive() && !sFound) {
-                while(opModeIsActive() && distanceSensorLeft.getDistance(MM) > 10) {
+                while(opModeIsActive() && distanceSensorLeft.getDistance(MM) > 11) {
                     move(POWER);
                 }
                 halt();
@@ -53,46 +55,28 @@ public class BrickBlue extends Bot {
                     telemetry.update();
                     sleep(1000);
                 } else {
-                    move(-.25, 50);
-                    strafe(STRAFEPOWER, 1350);
-                    move(.25, 50);
+                    strafe(STRAFEPOWER, 400);
                     sleep(50);
                 }
             }
             halt();
-            strafe(-.3,180);
+            double endTime = getRuntime();
+            strafe(.3,200);
             sleep(500);
             //Shimmy
             move(.25, 300);
-            strafe(-.5,150);
-            move(.25, 250);
-            strafe(.5,250);
+            strafe(-.5,100);
+            move(.25, 100);
+            strafe(.5,100);
 
             setGrabberPos(downPos);
-            telemetry.log().add("about to sleep");
             sleep(1000);
-            move(1,150);
-            sleep(500);
-            telemetry.log().add("back from sleep");
-            moveFastSlow(-.35, 2000);
-            move(.5, 30);
-            strafeFastSlow(-1, 1700);
-            move(.5, 700);
+            move(-.5, 2000);
+            strafe(-STRAFEPOWER*2 , ((int)((endTime - startTime) * 500)) + 700);
+            move(.5, 100);
             setGrabberPos(upPos);
-            moveFastSlow(-1,1000);
-            strafeFastSlow(-.35, 2000);
-            strafe(.35, 500);
-            move(.5, 500);
-            while(opModeIsActive() && distanceSensorLeft.getDistance(MM) > 11) {
-                move(POWER+.1);
-            }
-            halt();
-            setGrabberPos(downPos+.25);
-            sleep(1000);
-            move(-.45, 2750);
-            setGrabberPos(upPos);
-            strafe(1, 950);
-
+            move(-5,400);
+            strafe(.5, 800);
             break;
         }
     }
@@ -101,6 +85,13 @@ public class BrickBlue extends Bot {
     boolean yellow () {
         return colorSensorLeft.red() > 7000 && colorSensorLeft.green() > 10000 && colorSensorLeft.blue() < 10000;
 
+    }
+
+    void setGrabberPos(double pos) {
+        servoGrabber.setPosition(pos);
+        while (Math.abs(servoGrabber.getPosition() - pos) > 0.01) {
+            sleep(50);
+        }
     }
 }
 
