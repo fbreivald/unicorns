@@ -29,6 +29,7 @@ public class DriveOpMode extends LinearOpMode {
     private boolean prevX = false;
     private boolean prevY = false;
     private boolean prevA = false;
+    private boolean prevRB = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -111,6 +112,15 @@ public class DriveOpMode extends LinearOpMode {
                     armDown = false;
                 }
             }
+            if(bumperReleased()) {
+                if(!armDown) {
+                    servoGrabber.setPosition(downPos+.25);
+                    armDown = true;
+                } else if(armDown) {
+                    servoGrabber.setPosition(upPos);
+                    armDown = false;
+                }
+            }
 
 
 
@@ -155,6 +165,12 @@ public class DriveOpMode extends LinearOpMode {
         boolean released = !gamepad1.a && prevA;
         telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad1.y, prevA, released);
         prevA = gamepad1.a;
+        return released;
+    }
+    boolean bumperReleased() {
+        boolean released = !gamepad1.right_bumper && prevRB;
+        telemetry.addData("RB/prev/released", "%b/%b/%b", gamepad1.y, prevA, released);
+        prevRB = gamepad1.right_bumper;
         return released;
     }
 }
