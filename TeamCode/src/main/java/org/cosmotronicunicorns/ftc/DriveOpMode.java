@@ -30,6 +30,7 @@ public class DriveOpMode extends LinearOpMode {
     private boolean prevY = false;
     private boolean prevA = false;
     private boolean prevRB = false;
+    private boolean prevB = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -75,7 +76,7 @@ public class DriveOpMode extends LinearOpMode {
         loop();
         // run until the end of the match (driver presses STOP)
         // Set two opposite motors to reverse
-        int beastmode = 1;
+        double beastmode = 1;
         boolean armDown = false;
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -95,9 +96,9 @@ public class DriveOpMode extends LinearOpMode {
 
             // Check if beastmode has changed
             if(yReleased()) {
-                beastmode++;
+                beastmode+=.5;
             } else if (xReleased()) {
-                beastmode = Math.max(beastmode - 1, 1);
+                beastmode = Math.max(beastmode - .5, 1);
             }
             telemetry.addData("beastmode", beastmode);
 
@@ -120,6 +121,12 @@ public class DriveOpMode extends LinearOpMode {
                     servoGrabber.setPosition(upPos);
                     armDown = false;
                 }
+            }
+            if (bReleased()Released()) {
+                lbPower = -lbPower;
+                lfPower = -lfPower;
+                rfPower = -rfPower;
+                rbPower = -rbPower;
             }
 
 
@@ -159,6 +166,12 @@ public class DriveOpMode extends LinearOpMode {
         boolean released = !gamepad1.y && prevY;
         telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad1.y, prevY, released);
         prevY = gamepad1.y;
+        return released;
+    }
+    boolean bReleased() {
+        boolean released = !gamepad1.b && prevB;
+        telemetry.addData("Y/prev/released", "%b/%b/%b", gamepad1.b, prevB, released);
+        prevB = gamepad1.b;
         return released;
     }
     boolean aReleased() {
