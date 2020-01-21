@@ -99,7 +99,8 @@ public class BrickBlue extends Bot {
 
 
     boolean yellow () {
-        return colorSensorLeft.red() > 7000 && colorSensorLeft.green() > 10000 && colorSensorLeft.blue() < 10000;
+        //return colorSensorLeft.red() > 7000 && colorSensorLeft.green() > 10000 && colorSensorLeft.blue() < 10000;
+        return colorSensorRight.red()/colorSensorRight.blue() > 1.85;
 
     }
 }
