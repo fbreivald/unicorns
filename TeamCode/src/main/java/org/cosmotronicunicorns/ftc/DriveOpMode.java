@@ -20,6 +20,9 @@ public class DriveOpMode extends LinearOpMode {
     private DcMotor mRightBack;
 
     private Servo servoGrabber;
+    private Servo servoLift;
+    private Servo servoRotate;
+    private Servo servoPincher;
     private ColorSensor fColorSensor;
     private DistanceSensor fDistanceSensor;
     private static double upPos = .55;
@@ -59,6 +62,21 @@ public class DriveOpMode extends LinearOpMode {
             servoGrabber = hardwareMap.get(Servo.class, "servoGrabber");
         } catch (Exception e) {
             telemetry.addData("error", "grabber servo not found");
+        }
+        try {
+            servoLift = hardwareMap.get(Servo.class, "servoLift");
+        } catch (Exception e) {
+            telemetry.addData("error", "lift servo not found");
+        }
+        try {
+            servoRotate = hardwareMap.get(Servo.class, "servoRotate");
+        } catch (Exception e) {
+            telemetry.addData("error", "rotate servo not found");
+        }
+        try {
+            servoPincher = hardwareMap.get(Servo.class, "servoPincher");
+        } catch (Exception e) {
+            telemetry.addData("error", "pincher servo not found");
         }
         try {
             fColorSensor = hardwareMap.get(ColorSensor.class, "fColorSensor");
