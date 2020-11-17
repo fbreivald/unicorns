@@ -3,11 +3,14 @@ package org.cosmotronicunicorns.ftc;
 // import packages
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.configuration.annotations.ServoType;
+import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigurationType;
 import com.qualcomm.robotcore.util.Range;
 
 
@@ -20,9 +23,9 @@ public class DriveOpMode extends LinearOpMode {
     private DcMotor mRightBack;
 
     private Servo servoGrabber;
-    private Servo servoLift;
-    private Servo servoRotate;
-    private Servo servoPincher;
+    private CRServo servoLift;
+    private CRServo servoRotate;
+    private CRServo servoPincher;
     private ColorSensor fColorSensor;
     private DistanceSensor fDistanceSensor;
     private static double upPos = .55;
@@ -64,17 +67,17 @@ public class DriveOpMode extends LinearOpMode {
             telemetry.addData("error", "grabber servo not found");
         }
         try {
-            servoLift = hardwareMap.get(Servo.class, "servoLift");
+            servoLift = hardwareMap.get(CRServo.class, "servoLift");
         } catch (Exception e) {
             telemetry.addData("error", "lift servo not found");
         }
         try {
-            servoRotate = hardwareMap.get(Servo.class, "servoRotate");
+            servoRotate = hardwareMap.get(CRServo.class, "servoRotate");
         } catch (Exception e) {
             telemetry.addData("error", "rotate servo not found");
         }
         try {
-            servoPincher = hardwareMap.get(Servo.class, "servoPincher");
+            servoPincher = hardwareMap.get(CRServo.class, "servoPincher");
         } catch (Exception e) {
             telemetry.addData("error", "pincher servo not found");
         }
@@ -102,15 +105,23 @@ public class DriveOpMode extends LinearOpMode {
 
         while (opModeIsActive()) {
             //declare variables for controller input
-            double LSY = -gamepad1.left_stick_y;
-            double RSX = -gamepad1.right_stick_x;
-            double LT = gamepad1.left_trigger;
-            double RT = gamepad1.right_trigger;
-            double strafe = LT - RT;
+            double LSY1 = -gamepad1.left_stick_y;
+            double RSX1 = -gamepad1.right_stick_x;
+            double LT1 = gamepad1.left_trigger;
+            double RT1 = gamepad1.right_trigger;
+            double LSY2 = gamepad2.left_stick_y;
+            double RSX2 = gamepad2.right_stick_x;
+            double LT2 = gamepad2.left_trigger;
+            double RT2 = gamepad2.right_trigger;
+            double strafe = LT1 - RT1;
+            double pinch = LT2 - RT2;
             double lfPower = 0;
             double rfPower = 0;
             double lbPower = 0;
             double rbPower = 0;
+            double liftPower = 0;
+            double rotatePower = 0;
+            double pincherPower = 0;
 
             // Check if beastmode has changed
             if(yReleased()) {
@@ -140,33 +151,40 @@ public class DriveOpMode extends LinearOpMode {
                     armDown = false;
                 }
             }
-            if (bReleased()Released()) {
-                lbPower = -lbPower;
-                lfPower = -lfPower;
-                rfPower = -rfPower;
-                rbPower = -rbPower;
-            }
+//            if (bReleased()) {
+//                lbPower = -lbPower;
+//                lfPower = -lfPower;
+//                rfPower = -rfPower;
+//                rbPower = -rbPower;
+//            }
 
 
 
             //Declare power to Joystick Position with max of 1 and min of -1
-            lfPower = Range.clip(LSY - RSX - strafe, -1.0, 1.0);
-            lbPower = Range.clip(LSY - RSX + strafe, -1.0, 1.0);
-            rfPower = Range.clip(LSY + RSX + strafe, -1.0, 1.0);
-            rbPower = Range.clip(LSY + RSX - strafe, -1.0, 1.0);
+            lfPower = Range.clip(LSY1 - RSX1 - strafe, -1.0, 1.0);
+            lbPower = Range.clip(LSY1 - RSX1 + strafe, -1.0, 1.0);
+            rfPower = Range.clip(LSY1 + RSX1 + strafe, -1.0, 1.0);
+            rbPower = Range.clip(LSY1 + RSX1 - strafe, -1.0, 1.0);
 
+            liftPower = Range.clip(LSY2, -1.0, 1.0);
+            rotatePower = Range.clip(RSX2, -1.0, 1.0);
+            pincherPower = Range.clip(pinch, -1.0, 1.0);
             // Set motor power to declared power
             mLeftFront.setPower(lfPower / beastmode);
             mRightFront.setPower(rfPower / beastmode);
             mLeftBack.setPower(lbPower / beastmode);
             mRightBack.setPower(rbPower / beastmode);
 
+           servoLift.setPower(liftPower);
+            servoRotate.setPower(rotatePower/3);
+            servoPincher.setPower(pincherPower);
+
             //Output controller input
             telemetry.addData("Status", "running");
-            telemetry.addData("Left Stick Y: ", LSY);
-            telemetry.addData("Right Stick X: ", RSX);
-            telemetry.addData("Left Trigger: ", LT);
-            telemetry.addData("Right Trigger ", RT);
+            telemetry.addData("Left Stick Y: ", LSY2);
+            telemetry.addData("Right Stick X: ", RSX2);
+            telemetry.addData("Left Trigger: ", LT2);
+            telemetry.addData("Right Trigger ", RT2);
             telemetry.addData("ServoGrabber Position: ", servoGrabber.getPosition());
             telemetry.update();
         }
