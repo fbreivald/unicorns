@@ -21,9 +21,9 @@ public class BrickRed extends Bot {
         boolean correctDistance = false;
         int stones = 0;
 
-        telemetry.addData("Distance (mm)", () -> distanceSensorRight.getDistance(MM));
+        //telemetry.addData("Distance (mm)", () -> distanceSensorRight.getDistance(MM));
         Telemetry.Item colorItem = telemetry.addData("color:", "%d, %d, %d", colorSensorRight.red(), colorSensorRight.green(), colorSensorRight.blue());
-        colorItem.setValue(() -> colorSensorRight.argb());
+        //colorItem.setValue(() -> colorSensorRight.argb());
         while (opModeIsActive()) {
 
             move(POWER);
@@ -72,7 +72,7 @@ public class BrickRed extends Bot {
             move(.25, 250);
             strafe(-.5,300);
 
-            setGrabberPos(downPos);
+            //setGrabberPos(downPos);
             sleep(1000);
             move(1,150);
             sleep(500);
@@ -80,7 +80,7 @@ public class BrickRed extends Bot {
             move(.5, 30);
             strafeFastSlow(1, 1700);
             move(.5, 700);
-            setGrabberPos(upPos);
+            //setGrabberPos(upPos);
             moveFastSlow(-1,1000);
             strafeFastSlow(.35, 2000);
             strafe(-.35, 500);
@@ -89,10 +89,10 @@ public class BrickRed extends Bot {
                 move(POWER+.1);
             }
             halt();
-            setGrabberPos(downPos+.25);
+            //setGrabberPos(downPos+.25);
             sleep(1000);
             move(-.45, 2750);
-            setGrabberPos(upPos);
+            //setGrabberPos(upPos);
             strafe(-1, 950);
 
             break;

@@ -13,23 +13,24 @@ import com.qualcomm.robotcore.hardware.configuration.annotations.ServoType;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigurationType;
 import com.qualcomm.robotcore.util.Range;
 
-
 @TeleOp
 public class DriveOpMode extends LinearOpMode {
-// declare components
+    // declare components
     private DcMotor mLeftFront;
     private DcMotor mLeftBack;
     private DcMotor mRightFront;
     private DcMotor mRightBack;
+    private DcMotor mLeftShooter;
+    private DcMotor mRightShooter;
 
-    private Servo servoGrabber;
-    private CRServo servoLift;
-    private CRServo servoRotate;
-    private CRServo servoPincher;
+    //private Servo servoGrabber;
+    //private CRServo servoLift;
+    //private CRServo servoRotate;
+    //private CRServo servoPincher;
     private ColorSensor fColorSensor;
     private DistanceSensor fDistanceSensor;
-    private static double upPos = .55;
-    private static double downPos = .95;
+    private static double upPos = .15;
+    private static double downPos = .45;
 
     //To check if x or y are pressed
     private boolean prevX = false;
@@ -62,25 +63,17 @@ public class DriveOpMode extends LinearOpMode {
             telemetry.addData("error", "RightBack Motor not found");
         }
         try {
-            servoGrabber = hardwareMap.get(Servo.class, "servoGrabber");
+            mLeftShooter = hardwareMap.get(DcMotor.class, "mLeftShooter");
         } catch (Exception e) {
-            telemetry.addData("error", "grabber servo not found");
+            telemetry.addData("error", "LeftShooter Motor not found");
         }
         try {
-            servoLift = hardwareMap.get(CRServo.class, "servoLift");
+            mRightShooter = hardwareMap.get(DcMotor.class, "mRightShooter");
         } catch (Exception e) {
-            telemetry.addData("error", "lift servo not found");
+            telemetry.addData("error", "RightShooter Motor not found");
         }
-        try {
-            servoRotate = hardwareMap.get(CRServo.class, "servoRotate");
-        } catch (Exception e) {
-            telemetry.addData("error", "rotate servo not found");
-        }
-        try {
-            servoPincher = hardwareMap.get(CRServo.class, "servoPincher");
-        } catch (Exception e) {
-            telemetry.addData("error", "pincher servo not found");
-        }
+
+
         try {
             fColorSensor = hardwareMap.get(ColorSensor.class, "fColorSensor");
         } catch (Exception e) {
@@ -102,6 +95,7 @@ public class DriveOpMode extends LinearOpMode {
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         mLeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        mLeftShooter.setDirection(DcMotorSimple.Direction.REVERSE);
 
         while (opModeIsActive()) {
             //declare variables for controller input
@@ -131,9 +125,7 @@ public class DriveOpMode extends LinearOpMode {
             }
             telemetry.addData("beastmode", beastmode);
 
-
-            // To move arm up and down with a toggle button A
-            if(aReleased()) {
+            /*if(aReleased()) {
                 if(!armDown) {
                     servoGrabber.setPosition(downPos);
                     armDown = true;
@@ -141,16 +133,11 @@ public class DriveOpMode extends LinearOpMode {
                     servoGrabber.setPosition(upPos);
                     armDown = false;
                 }
-            }
-            if(bumperReleased()) {
-                if(!armDown) {
-                    servoGrabber.setPosition(downPos+.25);
-                    armDown = true;
-                } else if(armDown) {
-                    servoGrabber.setPosition(upPos);
-                    armDown = false;
-                }
-            }
+            }*/
+
+
+            // To move arm up and down with a toggle button A
+
 //            if (bReleased()) {
 //                lbPower = -lbPower;
 //                lfPower = -lfPower;
@@ -174,10 +161,12 @@ public class DriveOpMode extends LinearOpMode {
             mRightFront.setPower(rfPower / beastmode);
             mLeftBack.setPower(lbPower / beastmode);
             mRightBack.setPower(rbPower / beastmode);
+            mRightShooter.setPower(-RT2);
+            mLeftShooter.setPower(-RT2);
 
-           servoLift.setPower(liftPower);
-            servoRotate.setPower(rotatePower/3);
-            servoPincher.setPower(pincherPower);
+            //servoLift.setPower(liftPower);
+            // servoRotate.setPower(rotatePower/3);
+            //servoPincher.setPower(pincherPower);
 
             //Output controller input
             telemetry.addData("Status", "running");
@@ -185,7 +174,7 @@ public class DriveOpMode extends LinearOpMode {
             telemetry.addData("Right Stick X: ", RSX2);
             telemetry.addData("Left Trigger: ", LT2);
             telemetry.addData("Right Trigger ", RT2);
-            telemetry.addData("ServoGrabber Position: ", servoGrabber.getPosition());
+            // telemetry.addData("ServoGrabber Position: ", servoGrabber.getPosition());
             telemetry.update();
         }
     }

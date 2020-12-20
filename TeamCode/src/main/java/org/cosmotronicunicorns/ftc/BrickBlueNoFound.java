@@ -20,9 +20,9 @@ public class BrickBlueNoFound extends Bot {
         boolean correctDistance = false;
         int stones = 0;
 
-        telemetry.addData("Distance (mm)", () -> distanceSensorLeft.getDistance(MM));
+        //telemetry.addData("Distance (mm)", () -> distanceSensorLeft.getDistance(MM));
         Telemetry.Item colorItem = telemetry.addData("color:", "%d, %d, %d", colorSensorLeft.red(), colorSensorLeft.green(), colorSensorLeft.blue());
-        colorItem.setValue(() -> colorSensorLeft.argb());
+        //colorItem.setValue(() -> colorSensorLeft.argb());
         while (opModeIsActive()) {
 
             move(POWER);
@@ -69,12 +69,12 @@ public class BrickBlueNoFound extends Bot {
             move(.25, 100);
             strafe(.5,100);
 
-            setGrabberPos(downPos);
+            //setGrabberPos(downPos);
             sleep(1000);
             move(-.5, 2000);
             strafe(-STRAFEPOWER*2 , ((int)((endTime - startTime) * 500)) + 700);
             move(.5, 100);
-            setGrabberPos(upPos);
+            //setGrabberPos(upPos);
             move(-5,400);
             strafe(.5, 800);
             break;
@@ -87,11 +87,7 @@ public class BrickBlueNoFound extends Bot {
 
     }
 
-    void setGrabberPos(double pos) {
-        servoGrabber.setPosition(pos);
-        while (Math.abs(servoGrabber.getPosition() - pos) > 0.01) {
-            sleep(50);
-        }
-    }
+
 }
+
 

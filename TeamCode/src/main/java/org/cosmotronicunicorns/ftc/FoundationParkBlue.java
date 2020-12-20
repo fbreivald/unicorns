@@ -21,10 +21,10 @@ public class FoundationParkBlue extends Bot {
             move(.2);
         }
         halt();
-        servoGrabber.setPosition(downPos+.05);
+        //servoGrabber.setPosition(downPos+.05);
         sleep(1000);
         move(-.25, 5000);
-        servoGrabber.setPosition(upPos);
+        //servoGrabber.setPosition(upPos);
         strafe(1, 900);
 
 

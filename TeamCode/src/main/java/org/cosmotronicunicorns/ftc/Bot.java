@@ -19,14 +19,16 @@ public abstract class Bot extends LinearOpMode {
     protected DcMotor mLeftBack;
     protected DcMotor mRightFront;
     protected DcMotor mRightBack;
+    protected DcMotor mLeftShooter;
+    protected DcMotor mRightShooter;
     protected ColorSensor colorSensorRight;
-    protected  ColorSensor colorSensorLeft;
+    protected ColorSensor colorSensorLeft;
     protected DistanceSensor distanceSensorRight;
     protected DistanceSensor distanceSensorLeft;
 
-    protected Servo servoGrabber;
-    protected static double upPos = .55;
-    protected static double downPos = 1.1;
+    //protected Servo servoGrabber;
+    protected static double upPos = .15;
+    protected static double downPos = .45;
 
     //To check if x or y are pressed
     private boolean prevX = false;
@@ -38,24 +40,25 @@ public abstract class Bot extends LinearOpMode {
         mLeftBack = initDevice(DcMotor.class, "mLeftBack");
         mRightFront = initDevice(DcMotor.class, "mRightFront");
         mRightBack = initDevice(DcMotor.class, "mRightBack");
-        servoGrabber = initDevice(Servo.class, "servoGrabber");
+        mLeftShooter = initDevice(DcMotor.class, "mLeftShooter");
+        mRightShooter = initDevice(DcMotor.class, "mRightShooter");
+        //servoGrabber = initDevice(Servo.class, "servoGrabber");
         colorSensorRight = initDevice(ColorSensor.class, "fColorSensor");
         colorSensorLeft = initDevice(ColorSensor.class, "fColorSensor2");
         distanceSensorRight = initDevice(DistanceSensor.class, "fColorSensor");
         distanceSensorLeft = initDevice(DistanceSensor.class, "fColorSensor2");
-        servoGrabber.setPosition(upPos);
+        //servoGrabber.setPosition(upPos);
 
         mRightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         mRightBack.setDirection(DcMotorSimple.Direction.REVERSE);
         mLeftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        mLeftShooter.setDirection(DcMotorSimple.Direction.REVERSE);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
 
-    protected void resetDevices() {
-        servoGrabber.setPosition(upPos);
-    }
+
 
     private <T> T initDevice(Class<? extends T> type, String name) {
         T device = null;
@@ -144,9 +147,5 @@ public abstract class Bot extends LinearOpMode {
         return opModeIsActive() && test.get();
     }
 
-    void setGrabberPos(double pos) {
-        servoGrabber.setPosition(pos);
-    }
+
 }
-
-

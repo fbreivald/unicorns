@@ -55,11 +55,11 @@ public class Analysis extends Bot {
         sleep(1000); */
 
         while(opModeIsActive()) {
-            telemetry.addData("Color Sensor R: ", colorSensor.red());
+           /* telemetry.addData("Color Sensor R: ", colorSensor.red());
             telemetry.addData("Color Sensor G: ", colorSensor.green());
             telemetry.addData("Color Sensor B: ", colorSensor.blue());
             telemetry.addData("DistanceMM: ", distanceSensor.getDistance(DistanceUnit.MM));
-            telemetry.update();
+            telemetry.update();*/
         }
 
     }
